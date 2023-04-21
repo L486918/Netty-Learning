@@ -40,16 +40,16 @@ public class EchoServer {
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(group)
-                .channel(NioServerSocketChannel.class)
-                .localAddress(new InetSocketAddress(port))
+                .channel(NioServerSocketChannel.class) // 指定所使用的NIO传输Channel
+                .localAddress(new InetSocketAddress(port)) // 使用指定的端口设置套接字地址
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(serverHandler);
+                        ch.pipeline().addLast(serverHandler);//使用EchoServerHandler实例初始化每一个新的Channel
                     }
                 });
 
-            ChannelFuture f = b.bind().sync();
+            ChannelFuture f = b.bind().sync(); // 异步地绑定服务器,调用Sync方法阻塞等待直到绑定完成
             System.out.println(EchoServer.class.getName() +
                 " started and listening for connections on " + f.channel().localAddress());
             f.channel().closeFuture().sync();

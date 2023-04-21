@@ -12,15 +12,18 @@ import io.netty.util.CharsetUtil;
  * Listing 2.1 EchoServerHandler
  *
  * @author <a href="mailto:norman.maurer@gmail.com">Norman Maurer</a>
+ *
+ * 定义业务逻辑
  */
 @Sharable
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
+    // 对每个传入的消息都要调用
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ByteBuf in = (ByteBuf) msg;
         System.out.println(
                 "Server received: " + in.toString(CharsetUtil.UTF_8));
-        ctx.write(in);
+        ctx.write(in);  //将接收到的消息写给发送者
     }
 
     @Override
